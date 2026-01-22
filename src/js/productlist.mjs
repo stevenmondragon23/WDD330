@@ -19,7 +19,6 @@ export default class ProductList {
 }
 
 function productCardTemplate(product) {
-  // Convert ../images/ to /images/ for proper pathing
   const imagePath = product.Image.replace('../', '/');
   
   return `<li class="product-card">
