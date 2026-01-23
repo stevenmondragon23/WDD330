@@ -1,5 +1,5 @@
-// ProductDetails.mjs
-import { setLocalStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage, loadHeaderFooter } from "./utils.mjs";
+loadHeaderFooter();
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -11,27 +11,22 @@ export default class ProductDetails {
   async init() {
     this.product = await this.dataSource.findProductById(this.productId);
     this.renderProductDetails();
-    
-    document.getElementById('addToCart')
-      .addEventListener('click', this.addToCart.bind(this));
   }
 
   addToCart() {
-    let cart = JSON.parse(localStorage.getItem('so-cart')) || [];
+    let cart = getLocalStorage("so-cart") || [];
     cart.push(this.product);
-    localStorage.setItem('so-cart', JSON.stringify(cart));
-    
-    // Optional: Show feedback to user
-    alert('Product added to cart!');
+    setLocalStorage("so-cart", cart);
+
+    alert("Product added to cart!");
   }
 
   renderProductDetails() {
-    document.querySelector('title').textContent = `SleepOutside | ${this.product.Name}`;
-    
-    // Convert ../images/ to /images/ for proper pathing
-    const imagePath = this.product.Image.replace('../', '/');
-    
-    const main = document.querySelector('main');
+    document.querySelector("title").textContent = `SleepOutside | ${this.product.Name}`;
+
+    const imagePath = this.product.Image.replace("../", "/");
+
+    const main = document.querySelector("main");
     main.innerHTML = `
       <section class="product-detail">
         <h3>${this.product.Brand.Name}</h3>
@@ -49,9 +44,13 @@ export default class ProductDetails {
         </div>
       </section>
     `;
+
+    // ✅ Attach event listener AFTER rendering
+    document.getElementById("addToCart")
+      .addEventListener("click", this.addToCart.bind(this));
   }
 
   stripHtmlTags(html) {
-    return html.replace(/<\/?[^>]+(>|$)/g, '');
+    return html.replace(/<\/?[^>]+(>|$)/g, "");
   }
 }
