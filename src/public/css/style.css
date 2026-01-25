@@ -241,6 +241,26 @@ button {
   grid-column: 3;
 }
 
+.remove-item {
+  grid-row: 1 / span 2;
+  grid-column: 3;
+  justify-self: end;
+  align-self: center;
+  background-color: var(--tertiary-color);
+  color: #fff;
+  border: none;
+  padding: 0.3em 0.8em;
+  font-size: var(--small-font);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.remove-item:hover {
+  background-color: var(--secondary-color);
+}
+
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;

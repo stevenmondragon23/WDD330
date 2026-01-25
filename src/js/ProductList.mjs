@@ -1,5 +1,7 @@
 ﻿// ProductList.mjs
 import { renderListWithTemplate } from './utils.mjs';
+import { loadHeaderFooter } from "./utils.mjs";
+loadHeaderFooter();
 
 export default class ProductList {
   constructor(category, dataSource, listElement) {
