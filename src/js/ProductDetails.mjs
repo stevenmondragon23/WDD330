@@ -20,13 +20,30 @@ export default class ProductDetails {
     this.renderProductDetails();
   }
 
-  addToCart() {
-    let cart = getLocalStorage('so-cart') || [];
-    cart.push(this.product);
-    setLocalStorage('so-cart', cart);
+addToCart() {
+  let cart = getLocalStorage("so-cart") || [];
 
-    alertMessage('Product added to cart!', false); // Don't scroll on product pages
-  }
+  const image =
+    this.product.Images?.PrimaryLarge ||
+    (typeof this.product.PrimaryLarge === "string"
+      ? this.product.PrimaryLarge
+      : this.product.PrimaryLarge?.Url) ||
+    this.product.Image?.replace("../", "/") ||
+    "/images/placeholder.png";
+
+  const productForCart = {
+    Id: this.product.Id,
+    Name: this.product.Name || this.product.NameWithoutBrand,
+    FinalPrice: this.product.FinalPrice,
+    Image: image,
+    Colors: this.product.Colors || []
+  };
+
+  cart.push(productForCart);
+  setLocalStorage("so-cart", cart);
+
+  alertMessage("Product added to cart!", false);
+}
 
   renderProductDetails() {
     if (!this.product) {

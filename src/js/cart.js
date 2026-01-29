@@ -42,20 +42,28 @@ function renderCartContents() {
 }
 
 function cartItemTemplate(item) {
-  const imagePath = item.Image.replace("../", "/");
+  const imagePath =
+    typeof item.Image === "string"
+      ? item.Image.replace(/^..\//, "/")
+      : "/images/placeholder.png";
+
+  const name = item.Name || "Unnamed product";
+  const price = item.FinalPrice ?? item.Price ?? "—";
 
   return `<li class="cart-card divider">
     <a href="#" class="cart-card__image">
-      <img src="${imagePath}" alt="${item.Name}" />
+      <img src="${imagePath}" alt="${name}" />
     </a>
     <a href="#">
-      <h2 class="card__name">${item.Name}</h2>
+      <h2 class="card__name">${name}</h2>
     </a>
-    <p class="cart-card__color">${item.Colors[0].ColorName}</p>
+    <p class="cart-card__color">${item.Colors?.[0]?.ColorName ?? ""}</p>
     <p class="cart-card__quantity">qty: 1</p>
-    <p class="cart-card__price">$${item.FinalPrice}</p>
+    <p class="cart-card__price">$${price}</p>
   </li>`;
 }
 
-// Ejecutamos al cargar la página
+
+
+
 renderCartContents();
