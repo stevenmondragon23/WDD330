@@ -754,3 +754,23 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+
+/*REMOVE ITEMS */
+.cart-card {
+  position: relative;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.remove-item {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  font-size: 1.2rem;
+}

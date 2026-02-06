@@ -3,18 +3,20 @@ import {
   setLocalStorage,
   loadHeaderFooter,
 } from './utils.mjs';
+
 loadHeaderFooter();
 
+// Función para renderizar el carrito
 function renderCartContents() {
-  const cartItems = getLocalStorage("so-cart");
+  const cartItems = getLocalStorage("so-cart") || [];
 
   const productList = document.querySelector(".cart-list");
   const cartFooter = document.querySelector(".cart-footer");
   const cartTotalEl = document.querySelector(".cart-total");
 
-  if (!cartItems || cartItems.length === 0) {
+  if (cartItems.length === 0) {
     productList.innerHTML = "<li>Your cart is empty</li>";
-    cartFooter.classList.add("hide"); // hide footer when not items yet
+    cartFooter.classList.add("hide"); // ocultar footer si no hay items
     return;
   }
 
@@ -35,13 +37,22 @@ function renderCartContents() {
     checkoutBtn.textContent = "Checkout";
     checkoutBtn.className = "checkout-btn";
     checkoutBtn.addEventListener("click", () => {
-      alert("Checkout not implement yet"); // Message
+      alert("Checkout not implement yet"); // Mensaje temporal
     });
     cartFooter.appendChild(checkoutBtn);
   }
+
+  // Agregar listeners a las X para eliminar items
+  document.querySelectorAll(".remove-item").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const index = e.target.dataset.index;
+      removeCartItem(index);
+    });
+  });
 }
 
-function cartItemTemplate(item) {
+// Template de cada item del carrito con la X
+function cartItemTemplate(item, index) {
   const imagePath =
     typeof item.Image === "string"
       ? item.Image.replace(/^..\//, "/")
@@ -51,6 +62,7 @@ function cartItemTemplate(item) {
   const price = item.FinalPrice ?? item.Price ?? "—";
 
   return `<li class="cart-card divider">
+    <span class="remove-item" data-index="${index}">&#10006;</span>
     <a href="#" class="cart-card__image">
       <img src="${imagePath}" alt="${name}" />
     </a>
@@ -63,7 +75,13 @@ function cartItemTemplate(item) {
   </li>`;
 }
 
+// Función para eliminar un item del carrito
+function removeCartItem(index) {
+  const cartItems = getLocalStorage("so-cart") || [];
+  cartItems.splice(index, 1); // eliminar item por índice
+  setLocalStorage("so-cart", cartItems);
+  renderCartContents(); // re-renderizamos el carrito
+}
 
-
-
+// Renderizamos el carrito al cargar la página
 renderCartContents();
